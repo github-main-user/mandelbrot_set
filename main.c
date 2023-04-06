@@ -5,6 +5,8 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
+#define CHAR_ASPECT 9.0 / 20.0
+
 const char* GRADIENT = ".`,:;i1|tLs_-+^~ \"I<>l?7jvcft/\\()=~#<>Xz{[]}$bmwqpdbkhao*#MW&8%B@$";
 const uint32_t MAX_ITERS = 256;
 
@@ -56,6 +58,9 @@ char* calculate_set(uint16_t width, uint16_t height)
 	uint8_t grad_length = get_str_length(GRADIENT);
 	char* set = malloc(width * height);
 
+	double aspect = CHAR_ASPECT * ((double)width / height);
+	printf("%f", aspect);
+
 	for (uint16_t y = 0; y < height; y++)
 	{
 		double img = convert_number(y, height);
@@ -63,7 +68,7 @@ char* calculate_set(uint16_t width, uint16_t height)
 		{
 			double real = convert_number(x, width);
 
-			double a = real;
+			double a = real * aspect;
 			double b = img;
 
 			double orig_a = a;
@@ -78,9 +83,7 @@ char* calculate_set(uint16_t width, uint16_t height)
 
 			} while (it < MAX_ITERS - 1);
 
-			uint8_t val = (uint32_t)(grad_length * ((double)it / MAX_ITERS));
-			set[width * y + x] = GRADIENT[val];
-			printf("it = %d, val = %f\n", it,(float)val);
+			set[width * y + x] = GRADIENT[(uint32_t)(grad_length * ((double)it / MAX_ITERS))];
 		}
 	}
 	return set;	
