@@ -2,8 +2,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <math.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
 #include <curses.h>
 
 #define CHAR_ASPECT 9.0 / 20.0
