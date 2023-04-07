@@ -22,18 +22,6 @@ uint8_t get_str_length(const char* str)
 	return i;
 }
 
-uint16_t* get_terminal_size()
-{
-	static struct winsize w;
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-
-	static uint16_t size[2];
-	size[0] = w.ws_col;
-	size[1] = w.ws_row;
-
-	return size;
-}
-
 double convert_number(uint32_t number, uint32_t max)
 {
 	return (number - ((double)max / 2.0)) / ((double)max / 4.0);
@@ -97,9 +85,9 @@ int main()
 	curs_set(1);
 
 
-	uint16_t* size = get_terminal_size();
-	uint16_t width = size[0];
-	uint16_t height = size[1];
+	uint16_t width;
+	uint16_t height;
+	getmaxyx(stdscr, height, width);
 
 	char* set = calculate_set(width, height);
 	printw(set);
