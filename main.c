@@ -4,6 +4,7 @@
 #include <math.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <curses.h>
 
 #define CHAR_ASPECT 9.0 / 20.0
 
@@ -59,7 +60,6 @@ char* calculate_set(uint16_t width, uint16_t height)
 	char* set = malloc(width * height);
 
 	double aspect = CHAR_ASPECT * ((double)width / height);
-	printf("%f", aspect);
 
 	for (uint16_t y = 0; y < height; y++)
 	{
@@ -93,15 +93,21 @@ char* calculate_set(uint16_t width, uint16_t height)
 
 int main()
 {
-	char s = '#';
+	initscr();
+	curs_set(1);
+
 
 	uint16_t* size = get_terminal_size();
 	uint16_t width = size[0];
 	uint16_t height = size[1];
 
 	char* set = calculate_set(width, height);
-	printf(set);
+	printw(set);
+	refresh();
+	
+	getch();
 
+	endwin();
 	return 0;
 
 }
