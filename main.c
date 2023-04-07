@@ -9,16 +9,13 @@
 #define CHAR_ASPECT 9.0 / 20.0
 
 const char* GRADIENT = ".`,:;i1|tLs_-+^~ \"I<>l?7jvcft/\\()=~#<>Xz{[]}$bmwqpdbkhao*#MW&8%B@$";
-const uint32_t MAX_ITERS = 256;
 
 uint8_t get_str_length(const char* str)
 {
 	uint8_t i = 0;
-	while (*str != '\0')
-	{
+	while (*(str + i) != '\0')
 		i++;
-		str++;
-	}
+
 	return i;
 }
 
@@ -42,22 +39,22 @@ double magn(double a, double b)
 	return sqrt(a * a + b * b);
 }
 
-char* calculate_set(uint16_t width, uint16_t height)
+char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT, double* ZOOM, double* X_OFFSET, double* Y_OFFSET, uint32_t* MAX_ITERS)
 {
 	uint8_t grad_length = get_str_length(GRADIENT);
-	char* set = malloc(width * height);
+	char* set = malloc(WIDTH * HEIGHT);
 
-	double aspect = CHAR_ASPECT * ((double)width / height);
+	double aspect = CHAR_ASPECT * ((double)WIDTH / HEIGHT);
 
-	for (uint16_t y = 0; y < height; y++)
+	for (uint16_t y = 0; y < HEIGHT; y++)
 	{
-		double img = convert_number(y, height);
-		for (uint16_t x = 0; x < width; x++)
+		double img = convert_number(y, HEIGHT);
+		for (uint16_t x = 0; x < WIDTH; x++)
 		{
-			double real = convert_number(x, width);
+			double real = convert_number(x, WIDTH) * aspect;
 
-			double a = real * aspect;
-			double b = img;
+			double a = (real + *X_OFFSET / *ZOOM) * *ZOOM;
+			double b = (img + *Y_OFFSET / *ZOOM) * *ZOOM;
 
 			double orig_a = a;
 			double orig_b = b;
@@ -69,9 +66,9 @@ char* calculate_set(uint16_t width, uint16_t height)
 				to_square(&a, &b, &orig_a, &orig_b);
 				if (magn(a, b) > 2.0) break;
 
-			} while (it < MAX_ITERS - 1);
+			} while (it < *MAX_ITERS - 1);
 
-			set[width * y + x] = GRADIENT[(uint32_t)(grad_length * ((double)it / MAX_ITERS))];
+			set[WIDTH * y + x] = GRADIENT[(uint32_t)(grad_length * ((double)it / *MAX_ITERS))];
 		}
 	}
 	return set;	
@@ -85,16 +82,37 @@ int main()
 	curs_set(1);
 
 
-	uint16_t width;
-	uint16_t height;
-	getmaxyx(stdscr, height, width);
-
-	char* set = calculate_set(width, height);
-	printw(set);
-	refresh();
+	uint16_t WIDTH;
+	uint16_t HEIGHT;
+	uint32_t MAX_ITERS = 256;
+	double ZOOM = 1.0;
+	double X_OFFSET = 0.0;
+	double Y_OFFSET = 0.0;
 	
-	getch();
+	while (true)
+	{
+		getmaxyx(stdscr, HEIGHT, WIDTH);
 
+		char* set = calculate_set(WIDTH, HEIGHT, &ZOOM, &X_OFFSET, &Y_OFFSET, &MAX_ITERS);
+		mvaddstr(0,0,set);
+		free(set);
+
+		refresh();
+		
+		char key= getch();
+		flushinp();
+
+		if (key == 'q') break;
+		else if (key == 'h') X_OFFSET -= 0.1 * ZOOM;
+		else if (key == 'j') Y_OFFSET += 0.1 * ZOOM;
+		else if (key == 'k') Y_OFFSET -= 0.1 * ZOOM;
+		else if (key == 'l') X_OFFSET += 0.1 * ZOOM;
+		else if (key == 'd') ZOOM *= 0.9;
+		else if (key == 'f') ZOOM *= 1.1;
+		else if (key == 'u') MAX_ITERS *= 2;
+		else if (key == 'i') MAX_ITERS /= 2;
+
+	}
 	endwin();
 	return 0;
 
