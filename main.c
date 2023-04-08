@@ -13,7 +13,7 @@ uint8_t get_str_length(const char* str)
 	uint8_t i = 0;
 	while (*(str + i) != '\0')
 		i++;
-
+	
 	return i;
 }
 
@@ -40,7 +40,7 @@ double magn(double a, double b)
 char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT, double* ZOOM, double* X_OFFSET, double* Y_OFFSET, uint32_t* MAX_ITERS)
 {
 	uint8_t grad_length = get_str_length(GRADIENT);
-	char* set = malloc(WIDTH * HEIGHT);
+	char* set = malloc((WIDTH * HEIGHT) * sizeof(char));
 
 	double aspect = CHAR_ASPECT * ((double)WIDTH / HEIGHT);
 
