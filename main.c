@@ -76,8 +76,7 @@ char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT, double* ZOOM, double* X_OFF
 int main()
 {
 	initscr();
-	curs_set(1);
-
+	curs_set(0);
 
 	uint16_t WIDTH;
 	uint16_t HEIGHT;
@@ -101,7 +100,7 @@ int main()
 
 		switch(key)
 		{
-			case 'q': endwin(); return 0; break;
+			case 'q': endwin(); curs_set(1); return 0; break;
 			case 'h': X_OFFSET -= 0.1 * ZOOM; break; 
 			case 'j': Y_OFFSET += 0.1 * ZOOM; break;
 			case 'k': Y_OFFSET -= 0.1 * ZOOM; break;
