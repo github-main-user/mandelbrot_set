@@ -100,20 +100,19 @@ int main()
 		char key= getch();
 		flushinp();
 
-		if (key == 'q') break;
-		else if (key == 'h') X_OFFSET -= 0.1 * ZOOM;
-		else if (key == 'j') Y_OFFSET += 0.1 * ZOOM;
-		else if (key == 'k') Y_OFFSET -= 0.1 * ZOOM;
-		else if (key == 'l') X_OFFSET += 0.1 * ZOOM;
-		else if (key == 'd') ZOOM *= 0.9;
-		else if (key == 'f') ZOOM *= 1.1;
-		else if (key == 'u') MAX_ITERS *= 2;
-		else if (key == 'i') MAX_ITERS /= 2;
-
+		switch(key)
+		{
+			case 'q': endwin(); return 0; break;
+			case 'h': X_OFFSET -= 0.1 * ZOOM; break; 
+			case 'j': Y_OFFSET += 0.1 * ZOOM; break;
+			case 'k': Y_OFFSET -= 0.1 * ZOOM; break;
+			case 'l': X_OFFSET += 0.1 * ZOOM; break;
+			case 'd': ZOOM *= 0.9; break;
+			case 'f': ZOOM *= 1.1; break;
+			case 'u': MAX_ITERS *= 2; break;
+			case 'i': MAX_ITERS /= 2; break;
+		}
 	}
-	endwin();
-	return 0;
-
 }
 
 
