@@ -26,3 +26,4 @@
 - h j k l - movement
 - d f - zoom
 - u i - *= 2 or /= 2 max iterations
+- q - quit
