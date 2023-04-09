@@ -4,17 +4,9 @@
 #include <curses.h>
 
 #define CHAR_ASPECT 9.0 / 20.0
+#define GRADIENT_LENGTH 66
 
 const char* GRADIENT = ".`,:;i1|tLs_-+^~ \"I<>l?7jvcft/\\()=~#<>Xz{[]}$bmwqpdbkhao*#MW&8%B@$";
-
-uint8_t get_str_length(const char* str)
-{
-	uint8_t i = 0;
-	while (*(str + i) != '\0')
-		i++;
-	
-	return i;
-}
 
 double convert_number(uint32_t number, uint32_t max)
 {
@@ -38,7 +30,6 @@ double magn(double a, double b)
 
 char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT, double* ZOOM, double* X_OFFSET, double* Y_OFFSET, uint32_t* MAX_ITERS)
 {
-	uint8_t grad_length = get_str_length(GRADIENT);
 	char* set = malloc((WIDTH * HEIGHT) * sizeof(char));
 
 	double aspect = CHAR_ASPECT * ((double)WIDTH / HEIGHT);
@@ -65,7 +56,7 @@ char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT, double* ZOOM, double* X_OFF
 
 			} while (it < *MAX_ITERS - 1);
 
-			set[WIDTH * y + x] = GRADIENT[(uint32_t)(grad_length * ((double)it / *MAX_ITERS))];
+			set[WIDTH * y + x] = GRADIENT[(uint32_t)(GRADIENT_LENGTH * ((double)it / *MAX_ITERS))];
 		}
 	}
 	return set;	
