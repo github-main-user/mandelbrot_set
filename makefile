@@ -1,2 +1,4 @@
+LIBS=-lncurses -lm
+
 mandel: main.c
-	gcc -o mandel main.c -lncurses -lm
+	$(CC) -o mandel main.c $(LIBS)
