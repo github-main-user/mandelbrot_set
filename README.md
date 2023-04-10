@@ -22,6 +22,8 @@
 ......................................-----1,,,;---,,,,,:;$$$$$$1:,,,,,------,,--.
 
 ## Usage:
+> Use `make` to compile executable file
+> Use `make clean` to remove .o files
 
 - h j k l - movement
 - d f - zoom
