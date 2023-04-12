@@ -6,14 +6,11 @@ double convert_number(uint32_t number, uint32_t max)
     return (number - ((double)max / 2.0)) / ((double)max / 4.0);
 }
 
-void to_square(double* a, double* b, double* orig_a, double* orig_b)
+void to_square(double* a, double* b)
 {
     double temp = (*a * *a) - (*b * *b);
     *b = 2.0 * *a * *b;
     *a = temp;
-
-    *a += *orig_a;
-    *b += *orig_b;
 }
 
 double magn(double a, double b)
@@ -37,17 +34,19 @@ char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
             double a = (real + X_OFFSET / ZOOM) * ZOOM;
             double b = (img + Y_OFFSET / ZOOM) * ZOOM;
 
-            double orig_a = a;
-            double orig_b = b;
+            double old_a = a;
+            double old_b = b;
 
-            uint32_t it = 0;
-            do
+            int32_t it;
+            for (it = 0; it < MAX_ITERS - 1; it++)
             {
                 it++;
-                to_square(&a, &b, &orig_a, &orig_b);
-                if (magn(a, b) > 2.0) break;
+                to_square(&a, &b);
+				old_a += a;
+				old_b += b;
 
-            } while (it < MAX_ITERS - 1);
+                if (magn(a, b) > 2.0) break;
+            }
 
             set[WIDTH * y + x] = GRADIENT[(uint32_t)(GRADIENT_LENGTH * ((double)it / MAX_ITERS))];
         }
