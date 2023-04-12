@@ -40,10 +40,9 @@ char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
             int32_t it;
             for (it = 0; it < MAX_ITERS - 1; it++)
             {
-                it++;
                 to_square(&a, &b);
-				old_a += a;
-				old_b += b;
+				a += old_a;
+				b += old_b;
 
                 if (magn(a, b) > 2.0) break;
             }
