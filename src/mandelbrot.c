@@ -20,7 +20,7 @@ double magn(double a, double b)
 
 char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
 {
-    char* set = malloc((WIDTH * HEIGHT) * sizeof(char));
+    char* set = malloc(((WIDTH * HEIGHT) + 1) * sizeof(char));
 
     double aspect = CHAR_ASPECT * ((double)WIDTH / HEIGHT);
 
@@ -50,6 +50,7 @@ char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
             set[WIDTH * y + x] = GRADIENT[(uint32_t)(GRADIENT_LENGTH * ((double)it / MAX_ITERS))];
         }
     }
+	set[WIDTH * HEIGHT] = '\0';
     return set; 
 }
 
