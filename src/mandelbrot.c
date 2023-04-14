@@ -1,5 +1,5 @@
 #include "mandelbrot.h"
-
+#include <stdlib.h>
 
 double convert_number(uint32_t number, uint32_t max)
 {
@@ -13,39 +13,67 @@ void to_square(double* a, double* b)
     *a = temp;
 }
 
+uint32_t get_iters(uint16_t x, uint16_t y, double img, double real)
+{
+	double a = (real + X_OFFSET / ZOOM) * ZOOM;
+	double b = (img + Y_OFFSET / ZOOM) * ZOOM;
+
+	double old_a = a;
+	double old_b = b;
+
+	int32_t it;
+	for (it = 0; it < MAX_ITERS - 1; it++)
+	{
+		to_square(&a, &b);
+		a += old_a;
+		b += old_b;
+		//    (a^2 + b^2)	  2^2
+		if ((a * a + b * b) > 4.0) break;
+	}
+	return it;
+}
+
 char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
 {
-    char* set = malloc(((WIDTH * HEIGHT) + 1) * sizeof(char));
+	double img, real;
+    char* set = malloc(((WIDTH * HEIGHT) * UTF_SYMBOL_SIZE + 1) * sizeof(char));
 
-    double aspect = CHAR_ASPECT * ((double)WIDTH / HEIGHT);
+	ASPECT = CHAR_ASPECT * ((double)WIDTH / HEIGHT);
 
-    for (uint16_t y = 0; y < HEIGHT; y++)
+    for (uint16_t y = 0; y < HEIGHT * 4; y += 4)
     {
-        double img = convert_number(y, HEIGHT);
-        for (uint16_t x = 0; x < WIDTH; x++)
-        {
-            double real = convert_number(x, WIDTH) * aspect;
+        for (uint16_t x = 0; x < WIDTH * 2; x += 2)
+        {	
+			uint32_t it;
+			uint8_t byte = 0; 
 
-            double a = (real + X_OFFSET / ZOOM) * ZOOM;
-            double b = (img + Y_OFFSET / ZOOM) * ZOOM;
+			for (uint16_t iy = 0; iy < 4; iy++)
+			{
+				img = convert_number(y+iy, HEIGHT * 4);
+				for (uint16_t ix = 0; ix < 2; ix++)
+				{
+					real = convert_number(x, WIDTH * 2) * ASPECT;
+					it = get_iters(x+ix, y+iy, img, real);
 
-            double old_a = a;
-            double old_b = b;
+					if (it > MAX_ITERS / 2)
+						byte |= 1;
 
-            int32_t it;
-            for (it = 0; it < MAX_ITERS - 1; it++)
-            {
-                to_square(&a, &b);
-				a += old_a;
-				b += old_b;
-				//    (a^2 + b^2)	  2^2
-                if ((a * a + b * b) > 4.0) break;
-            }
+					byte <<= 1;
+				}
+			}
+            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 0] = "⣿"[0];
+            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 1] = "⣿"[1];
+            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 2] = "⣿"[2];
+            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 3] = "⣿"[3];
 
-            set[WIDTH * y + x] = GRADIENT[(uint32_t)(GRADIENT_LENGTH * ((double)it / MAX_ITERS))];
+			//set[WIDTH * (y/4) + (x/2)] = "⣿"[0];
+            //set[WIDTH * (y/4) + (x/2)] |= "⣿"[1] << 7;
+            //set[WIDTH * (y/4) + (x/2)] |= "⣿"[2] << 15;
+            //set[WIDTH * (y/4) + (x/2)] |= "⣿"[3] << 31;
+
         }
     }
-	set[WIDTH * HEIGHT] = '\0';
+	set[(WIDTH * HEIGHT) * UTF_SYMBOL_SIZE] = '\0';
     return set; 
 }
 

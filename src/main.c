@@ -1,11 +1,13 @@
 #include <stdlib.h>
 #include <curses.h>
+#include <locale.h>
 
 char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT);
 void control_mandelbrot(char key);
 
 int main()
 {
+	setlocale(LC_ALL, "en_US.UTF-8");
 	initscr();
 	curs_set(0);
 
