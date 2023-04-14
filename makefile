@@ -1,4 +1,4 @@
-LIBS=-lncurses -lm
+LIBS=-lncurses 
 
 mandel: main.o mandelbrot.o
 	$(CC) -o mandel src/main.o src/mandelbrot.o $(LIBS)

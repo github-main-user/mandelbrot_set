@@ -13,11 +13,6 @@ void to_square(double* a, double* b)
     *a = temp;
 }
 
-double magn(double a, double b)
-{
-    return sqrt(a * a + b * b);
-}
-
 char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
 {
     char* set = malloc(((WIDTH * HEIGHT) + 1) * sizeof(char));
@@ -43,8 +38,8 @@ char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
                 to_square(&a, &b);
 				a += old_a;
 				b += old_b;
-
-                if (magn(a, b) > 2.0) break;
+				//    (a^2 + b^2)	  2^2
+                if ((a * a + b * b) > 4.0) break;
             }
 
             set[WIDTH * y + x] = GRADIENT[(uint32_t)(GRADIENT_LENGTH * ((double)it / MAX_ITERS))];
