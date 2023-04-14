@@ -10,5 +10,4 @@ mandelbrot.o: src/mandelbrot.c src/mandelbrot.h
 	$(CC) -c src/mandelbrot.c -o src/mandelbrot.o
 
 clean:
-	$(RM) src/main.o
-	$(RM) src/mandelbrot.o
+	$(RM) src/*.o
