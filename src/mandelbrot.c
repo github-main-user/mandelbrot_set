@@ -13,10 +13,8 @@ void to_square(double* a, double* b)
     *a = temp;
 }
 
-char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
+void calculate_set(char* set, uint16_t WIDTH, uint16_t HEIGHT)
 {
-    char* set = malloc(((WIDTH * HEIGHT) + 1) * sizeof(char));
-
     double aspect = CHAR_ASPECT * ((double)WIDTH / HEIGHT);
 
     for (uint16_t y = 0; y < HEIGHT; y++)
@@ -46,7 +44,6 @@ char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
         }
     }
 	set[WIDTH * HEIGHT] = '\0';
-    return set; 
 }
 
 void control_mandelbrot(char key)

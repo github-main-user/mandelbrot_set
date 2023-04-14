@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <curses.h>
 
-char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT);
+void calculate_set(char* set, uint16_t WIDTH, uint16_t HEIGHT);
 void control_mandelbrot(char key);
 
 int main()
@@ -15,9 +15,10 @@ int main()
 	    uint16_t HEIGHT;
 	    getmaxyx(stdscr, HEIGHT, WIDTH); // get COLS and ROWS
 
+		char* set = malloc((WIDTH * HEIGHT + 1) * sizeof(char));
 
-		char* set = calculate_set(WIDTH, HEIGHT);
-		mvaddstr(0,0,set); // print set to 0x 0y
+		calculate_set(set, WIDTH, HEIGHT);
+		mvaddstr(0, 0, set); // print set to 0x 0y
 		free(set);
 
 		refresh();

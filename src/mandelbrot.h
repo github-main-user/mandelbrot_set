@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include <stdlib.h>
 
 #define CHAR_ASPECT 9.0 / 20.0
 
