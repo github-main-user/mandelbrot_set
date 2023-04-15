@@ -13,7 +13,7 @@ void to_square(double* a, double* b)
     *a = temp;
 }
 
-uint32_t get_iters(uint16_t x, uint16_t y, double img, double real)
+uint32_t get_iters(double img, double real)
 {
 	double a = (real + X_OFFSET / ZOOM) * ZOOM;
 	double b = (img + Y_OFFSET / ZOOM) * ZOOM;
@@ -52,25 +52,18 @@ char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
 				img = convert_number(y+iy, HEIGHT * 4);
 				for (uint16_t ix = 0; ix < 2; ix++)
 				{
-					real = convert_number(x, WIDTH * 2) * ASPECT;
-					it = get_iters(x+ix, y+iy, img, real);
+					real = convert_number(x+ix, WIDTH * 2) * ASPECT;
+					it = get_iters(img, real);
+
+					byte <<= 1;
 
 					if (it > MAX_ITERS / 2)
 						byte |= 1;
-
-					byte <<= 1;
 				}
 			}
-            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 0] = "⣿"[0];
-            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 1] = "⣿"[1];
-            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 2] = "⣿"[2];
-            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 3] = "⣿"[3];
-
-			//set[WIDTH * (y/4) + (x/2)] = "⣿"[0];
-            //set[WIDTH * (y/4) + (x/2)] |= "⣿"[1] << 7;
-            //set[WIDTH * (y/4) + (x/2)] |= "⣿"[2] << 15;
-            //set[WIDTH * (y/4) + (x/2)] |= "⣿"[3] << 31;
-
+			set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 0] = BRAILLES[byte * UTF_SYMBOL_SIZE + 0];
+            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 1] = BRAILLES[byte * UTF_SYMBOL_SIZE + 1];
+            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 2] = BRAILLES[byte * UTF_SYMBOL_SIZE + 2];
         }
     }
 	set[(WIDTH * HEIGHT) * UTF_SYMBOL_SIZE] = '\0';
