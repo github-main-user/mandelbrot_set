@@ -1,5 +1,10 @@
 #include "mandelbrot.h"
 
+void set_size(uint16_t W, uint16_t H)
+{
+	WIDTH = W;
+	HEIGHT = H;
+}
 
 double convert_number(uint32_t number, uint32_t max)
 {
@@ -13,7 +18,7 @@ void to_square(double* a, double* b)
     *a = temp;
 }
 
-void calculate_set(char* set, uint16_t WIDTH, uint16_t HEIGHT)
+void calculate_set(char* set)
 {
     double aspect = CHAR_ASPECT * ((double)WIDTH / HEIGHT);
 
