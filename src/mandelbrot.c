@@ -1,11 +1,5 @@
 #include "mandelbrot.h"
 
-void set_size(uint16_t W, uint16_t H)
-{
-	WIDTH = W;
-	HEIGHT = H;
-}
-
 double convert_number(uint32_t number, uint32_t max)
 {
     return (number - ((double)max / 2.0)) / ((double)max / 4.0);
