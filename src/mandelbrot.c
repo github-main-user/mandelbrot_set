@@ -61,9 +61,12 @@ char* calculate_set(uint16_t WIDTH, uint16_t HEIGHT)
 						byte |= 1;
 				}
 			}
-			set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 0] = BRAILLES[byte * UTF_SYMBOL_SIZE + 0];
-            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 1] = BRAILLES[byte * UTF_SYMBOL_SIZE + 1];
-            set[(WIDTH * (y/4) + (x/2)) * UTF_SYMBOL_SIZE + 2] = BRAILLES[byte * UTF_SYMBOL_SIZE + 2];
+				
+			uint16_t true_x = x / 2; 
+			uint16_t true_y = y / 4;
+
+			for (uint8_t i = 0; i < 3; i++)
+				set[(WIDTH * true_y  + true_x) * UTF_SYMBOL_SIZE + i] = BRAILLES[byte * UTF_SYMBOL_SIZE + i];
         }
     }
 	set[(WIDTH * HEIGHT) * UTF_SYMBOL_SIZE] = '\0';
