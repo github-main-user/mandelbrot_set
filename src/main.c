@@ -40,8 +40,7 @@ int main()
 			WIDTH = new_W;
 			HEIGHT = new_H;
 
-			if (set != NULL)
-				free(set);
+			free(set);
 			set = malloc((WIDTH * HEIGHT) * sizeof(uint32_t));
 
 			set_size = WIDTH * HEIGHT;
