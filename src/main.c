@@ -14,7 +14,7 @@ int main()
 	curs_set(0);
 
 	uint16_t new_W, new_H;
-	char* set;
+	char* set = NULL;
 
 	while (true)
 	{
@@ -23,6 +23,7 @@ int main()
 		{
 			WIDTH = new_W;
 			HEIGHT = new_H;
+			free(set);
 			set = malloc((WIDTH * HEIGHT + 1) * sizeof(char));
 		}
 
