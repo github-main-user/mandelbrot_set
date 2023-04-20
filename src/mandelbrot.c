@@ -12,7 +12,7 @@ void to_square(double* a, double* b)
     *a = temp;
 }
 
-void calculate_set(char* set)
+void calculate_set(uint32_t* set)
 {
     double aspect = CHAR_ASPECT * ((double)WIDTH / HEIGHT);
 
@@ -29,7 +29,7 @@ void calculate_set(char* set)
             double old_a = a;
             double old_b = b;
 
-            int32_t it;
+            uint32_t it;
             for (it = 0; it < MAX_ITERS - 1; it++)
             {
                 to_square(&a, &b);
@@ -39,10 +39,9 @@ void calculate_set(char* set)
                 if ((a * a + b * b) > 4.0) break;
             }
 
-            set[WIDTH * y + x] = GRADIENT[(uint32_t)(GRADIENT_LENGTH * ((double)it / MAX_ITERS))];
+            set[WIDTH * y + x] = it;
         }
     }
-	set[WIDTH * HEIGHT] = '\0';
 }
 
 void control_mandelbrot(char key)
