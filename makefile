@@ -1,7 +1,11 @@
+TARGET=mandelbrot
+
 LIBS=-lncurses 
 
-mandel: main.o mandelbrot.o
-	$(CC) -o mandel src/main.o src/mandelbrot.o $(LIBS)
+LDFLAGS=$(LIBS)
+
+$(TARGET): main.o mandelbrot.o
+	$(CC) -o $@ src/main.o src/mandelbrot.o $(LDFLAGS) 
 
 main.o: src/main.c
 	$(CC) -c src/main.c -o src/main.o
@@ -11,3 +15,4 @@ mandelbrot.o: src/mandelbrot.c src/mandelbrot.h
 
 clean:
 	$(RM) src/*.o
+	$(RM) $(TARGET)
