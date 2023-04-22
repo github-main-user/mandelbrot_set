@@ -1,18 +1,19 @@
-TARGET=mandelbrot
+TARGET = mandel
+LIBS = -lncurses 
+LDFLAGS = $(LIBS)
 
-LIBS=-lncurses 
-
-LDFLAGS=$(LIBS)
+SRC_DIR = src
+VPATH = $(SRC_DIR)
 
 $(TARGET): main.o mandelbrot.o
-	$(CC) -o $@ src/main.o src/mandelbrot.o $(LDFLAGS) 
+	$(CC) -o $@ $(SRC_DIR)/main.o $(SRC_DIR)/mandelbrot.o $(LDFLAGS) 
 
-main.o: src/main.c
-	$(CC) -c src/main.c -o src/main.o
+main.o: main.c
+	$(CC) -c -o $(SRC_DIR)/$@ $< 
 
-mandelbrot.o: src/mandelbrot.c src/mandelbrot.h
-	$(CC) -c src/mandelbrot.c -o src/mandelbrot.o
+mandelbrot.o: mandelbrot.c mandelbrot.h
+	$(CC) -c -o $(SRC_DIR)/$@ $< 
 
 clean:
-	$(RM) src/*.o
+	$(RM) $(SRC_DIR)/*.o
 	$(RM) $(TARGET)
