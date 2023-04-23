@@ -14,14 +14,14 @@ void to_square(double* a, double* b)
 
 void calculate_set(char* set)
 {
-    double aspect = CHAR_ASPECT * ((double)WIDTH / HEIGHT);
+    double aspect = CHAR_ASPECT * ((double)COLS / LINES);
 
-    for (uint16_t y = 0; y < HEIGHT; y++)
+    for (uint16_t y = 0; y < LINES; y++)
     {
-        double img = convert_number(y, HEIGHT);
-        for (uint16_t x = 0; x < WIDTH; x++)
+        double img = convert_number(y, LINES);
+        for (uint16_t x = 0; x < COLS; x++)
         {
-            double real = convert_number(x, WIDTH) * aspect;
+            double real = convert_number(x, COLS) * aspect;
 
             double a = (real + X_OFFSET / ZOOM) * ZOOM;
             double b = (img + Y_OFFSET / ZOOM) * ZOOM;
@@ -39,10 +39,10 @@ void calculate_set(char* set)
                 if ((a * a + b * b) > 4.0) break;
             }
 
-            set[WIDTH * y + x] = GRADIENT[(uint32_t)(GRADIENT_LENGTH * ((double)it / MAX_ITERS))];
+            set[COLS * y + x] = GRADIENT[(uint32_t)(GRADIENT_LENGTH * ((double)it / MAX_ITERS))];
         }
     }
-	set[WIDTH * HEIGHT] = '\0';
+	set[COLS * LINES] = '\0';
 }
 
 void control_mandelbrot(char key)
